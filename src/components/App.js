@@ -15,12 +15,19 @@ class App extends Component {
     };
 
     componentDidMount() {
+        this.getMovies();
+    };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevState.sort_by !== this.state.sort_by) this.getMovies();
+    };
+
+    getMovies = () => {
         fetch(`${API_URL}${API_KEY}&sort_by=${this.state.sort_by}`)
             .then(data => data.json())
             .then(data => this.setState({movies: data.results}))
-    }
 
-
+    };
     // likeMovie = () => {
     //     this.setState((prevState, props) => {
     //         return {like: !prevState.like}

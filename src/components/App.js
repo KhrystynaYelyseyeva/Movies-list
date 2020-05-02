@@ -12,6 +12,7 @@ class App extends Component {
         movies: [],
         willWatch: [],
         sort_by: 'popularity.desc',
+        page: 1,
     };
 
     componentDidMount() {
@@ -19,14 +20,14 @@ class App extends Component {
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevState.sort_by !== this.state.sort_by) this.getMovies();
+        if (prevState.sort_by !== this.state.sort_by ||
+            prevState.page !== this.state.page) this.getMovies();
     };
 
     getMovies = () => {
-        fetch(`${API_URL}${API_KEY}&sort_by=${this.state.sort_by}`)
+        fetch(`${API_URL}${API_KEY}&sort_by=${this.state.sort_by}&page=${this.state.page}`)
             .then(data => data.json())
             .then(data => this.setState({movies: data.results}))
-
     };
     // likeMovie = () => {
     //     this.setState((prevState, props) => {
@@ -56,6 +57,18 @@ class App extends Component {
         this.setState({sort_by: value})
     };
 
+    getPrevPage = () => {
+        this.setState((prevState, props) => {
+            return {page: prevState.page !== 1 ? prevState.page - 1 : prevState.page}
+        });
+    }
+
+    getNextPage = () => {
+        this.setState((prevState, props) => {
+            return {page: prevState.page !== 500 ? prevState.page + 1 : prevState.page}
+        });
+    }
+
     render() {
         const {movies, willWatch, sort_by} = this.state;
 
@@ -63,6 +76,13 @@ class App extends Component {
             <div className="container">
                 <div className="row mt-4">
                     <div className="col-9">
+                        <div className="row mb-4">
+                            <div className="col-12">
+                                <button onClick={this.getPrevPage} className="btn btn-dark m-2">Prev</button>
+                                {this.state.page}
+                                <button onClick={this.getNextPage} className="btn btn-dark m-2">Next</button>
+                            </div>
+                        </div>
                         <div className="row mb-4">
                             <div className="col-12">
                                 <MovieTabs

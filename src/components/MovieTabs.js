@@ -6,8 +6,8 @@ const MovieTabs = ({
                    }) => {
     return (<ul className="tabs nav nav-pills">
         <li className="nav-item">
-            <div onClick={() => updatePage("popular.desc")}
-                 className={`nav-link ${sort_by === "popular.desc" && "active"}`}>
+            <div onClick={() => updatePage("popularity.desc")}
+                 className={`nav-link ${sort_by === "popularity.desc" && "active"}`}>
                 Popular
             </div>
         </li>
